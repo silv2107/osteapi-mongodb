@@ -3,6 +3,9 @@ const { count } = require("./cheese.model");
 var Cheese = require("./cheese.model");
 var auth = require("./auth-middleware");
 module.exports = function(app){
+    app.get("/", function(req, res, next){
+        res.send("Hej Hej")
+    })
     //create a cheese
     app.post("/api/v1/cheeses", auth, function(request, response, next){
       try {
