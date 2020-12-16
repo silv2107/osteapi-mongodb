@@ -3,18 +3,17 @@ const { count } = require("./cheese.model");
 var Cheese = require("./cheese.model");
 var auth = require("./auth-middleware");
 module.exports = function(app){
-    app.get("/", function(req, res, next){
-        res.send("Hej Hej")
-    })
+    
     //create a cheese
-    app.post("/api/v1/cheeses", auth, function(request, response, next){
+    app.post("/api/v1/cheeses", function(request, response, next){
       try {
           var cheese = new Cheese({
               name: request.fields.name,
               price: request.fields.price,
               weight: request.fields.weight,
               strength: request.fields.strength,
-              brand: request.fields.brand
+              brand: request.fields.brand,
+              imgFit: request.fields.imgFit
           });
           cheese.save();
 
@@ -89,9 +88,9 @@ module.exports = function(app){
             }
     });
     //update cheese
-    app.patch("/api/v1/cheeses/:id", auth, async function(request, response, next){
+    app.patch("/api/v1/cheeses/:id", async function(request, response, next){
         try {
-            var { name, price, weight, strength, brand} = request.fields;
+            var { name, price, weight, strength, brand, imgFit} = request.fields;
             var updateObject = {};
 
             if(name) updateObject.name = name;
@@ -99,6 +98,9 @@ module.exports = function(app){
             if(weight) updateObject.weight = weight;
             if(strength) updateObject.strength = strength;
             if(brand) updateObject.brand = brand;
+            if(imgFit) updateObject.imgFit = imgFit;
+
+
 
             await Cheese.findByIdAndUpdate(request.params.id, updateObject);
 
